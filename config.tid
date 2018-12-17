@@ -1,4 +1,4 @@
-title: $:/plugins/bourgeoa/solid/config
+title: $:/plugins/bourgeoa/node-solid-server/config
 caption: solid SyncAdaptor
 tags: [[$:/tags/ControlPanel/Saving]]
 
@@ -6,19 +6,19 @@ tags: [[$:/tags/ControlPanel/Saving]]
 
 !! Choose a container to save your tiddlers into:
 
-|''Container'' |<$edit-text tiddler="$:/plugins/bourgeoa/solid/container" tag="input" default="main" /> |
+|''Container'' |<$edit-text tiddler="$:/plugins/bourgeoa/node-solid-server/container" tag="input" default="main" /> |
 
 The actual path in your solid server will be:
 
-  <$reveal type="nomatch" state="$:/plugins/bourgeoa/solid/private" text="yes">public</$reveal>/tiddlers/{{$:/plugins/bourgeoa/solid/container}}/
+  <$reveal type="nomatch" state="$:/plugins/bourgeoa/node-solid-server/private" text="yes">public</$reveal>/tiddlers/{{$:/plugins/bourgeoa/node-solid-server/container}}/
 
-  <$reveal type="match" state="$:/plugins/bourgeoa/solid/private" text="yes">
-    <$button set="$:/plugins/bourgeoa/solid/private" setTo="no">
+  <$reveal type="match" state="$:/plugins/bourgeoa/node-solid-server/private" text="yes">
+    <$button set="$:/plugins/bourgeoa/node-solid-server/private" setTo="no">
       Make public
     </$button>
   </$reveal>
-  <$reveal type="nomatch" state="$:/plugins/bourgeoa/solid/private" text="yes">
-    <$button set="$:/plugins/bourgeoa/solid/private" setTo="yes">
+  <$reveal type="nomatch" state="$:/plugins/bourgeoa/node-solid-server/private" text="yes">
+    <$button set="$:/plugins/bourgeoa/node-solid-server/private" setTo="yes">
       Make private
     </$button>
   </$reveal>
