@@ -1,0 +1,28 @@
+title: $:/plugins/bourgeoa/solid/config
+caption: solid SyncAdaptor
+tags: [[$:/tags/ControlPanel/Saving]]
+
+\define lingo-base() $:/language/ControlPanel/Basics/
+
+!! Choose a container to save your tiddlers into:
+
+|''Container'' |<$edit-text tiddler="$:/plugins/bourgeoa/solid/container" tag="input" default="main" /> |
+
+The actual path in your solid server will be:
+
+  <$reveal type="nomatch" state="$:/plugins/bourgeoa/solid/private" text="yes">public</$reveal>/tiddlers/{{$:/plugins/bourgeoa/solid/container}}/
+
+  <$reveal type="match" state="$:/plugins/bourgeoa/solid/private" text="yes">
+    <$button set="$:/plugins/bourgeoa/solid/private" setTo="no">
+      Make public
+    </$button>
+  </$reveal>
+  <$reveal type="nomatch" state="$:/plugins/bourgeoa/solid/private" text="yes">
+    <$button set="$:/plugins/bourgeoa/solid/private" setTo="yes">
+      Make private
+    </$button>
+  </$reveal>
+
+---
+
+Please refresh the page if you change this value.
