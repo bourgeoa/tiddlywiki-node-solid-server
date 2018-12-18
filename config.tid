@@ -4,26 +4,16 @@ tags: [[$:/tags/ControlPanel/Saving]]
 
 \define lingo-base() $:/language/ControlPanel/Basics/
 
-!! Choose a container to save your tiddlers into:
+!! Choose a container URI to save your tiddlers into.
+!! it should be read/write for your WebID.
 
-|''Container'' |<$edit-text tiddler="$:/plugins/bourgeoa/node-solid-server/container" tag="input" default="main" /> |
-|''Kind'' | <$reveal type="nomatch" state="$:/plugins/fiatjaf/remoteStorage/private" text="yes">public</$reveal><$reveal type="match" state="$:/plugins/fiatjaf/remoteStorage/private" text="yes">private</$reveal> |
+|''containerUri'' |<$edit-text tiddler="$:/plugins/bourgeoa/node-solid-server/container" tag="input" default="https://<podname></public/tiddlers/main>" /> |
 
 The actual path in your solid server will be:
 
-  <$reveal type="nomatch" state="$:/plugins/bourgeoa/node-solid-server/private" text="yes">public</$reveal><$reveal type="match" state="$:/plugins/bourgeoa/node-solid-server/private" text="yes">private</$reveal>/tiddlers/{{$:/plugins/bourgeoa/node-solid-server/container}}/
+  {{$:/plugins/bourgeoa/node-solid-server/containerUri}}/
   
-  <$reveal type="match" state="$:/plugins/bourgeoa/node-solid-server/private" text="yes">
-    <$button set="$:/plugins/bourgeoa/node-solid-server/private" setTo="no">
-      Make public
-    </$button>
-  </$reveal>
-  <$reveal type="nomatch" state="$:/plugins/bourgeoa/node-solid-server/private" text="yes">
-    <$button set="$:/plugins/bourgeoa/node-solid-server/private" setTo="yes">
-      Make private
-    </$button>
-  </$reveal>
-
+  
 ---
 
-Please refresh the page if you change this value.
+Please close the tiddler to save the container URI.
