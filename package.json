@@ -2,7 +2,6 @@
   "dependencies": {
      "solid-file-client": "^0.2.0"
   },
-{
   "peerDependencies": {
     "solid-auth-client": "^2.2.14",
     "rdflib": "^0.19.1"
