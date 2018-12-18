@@ -1,6 +1,6 @@
 {
   "dependencies": {
-     "solid-file-client": "^1.0.0"
+     "solid-file-client": "^0.2.0"
   },
 {
   "peerDependencies": {
