@@ -1,7 +1,11 @@
 {
   "dependencies": {
+     "solid-file-client": "^1.0.0"
+  },
+{
+  "peerDependencies": {
     "solid-auth-client": "^2.2.14",
-    "solid-file-client": "^1.0.0"
+    "rdflib": "^0.19.1"
   },
   "devDependencies": {
     "browserify": "^16.1.0"
