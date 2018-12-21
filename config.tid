@@ -7,7 +7,7 @@ tags: [[$:/tags/ControlPanel/Saving]]
 !! Choose a container URI to save your tiddlers into.
 !! it should be read/write for your WebID.
 
-|''containerUri'' |<$edit-text tiddler="$:/plugins/bourgeoa/node-solid-server/container" tag="input" default="https://<podname></public/tiddlers/main>" /> |
+|''containerUri'' |<$edit-text tiddler="$:/plugins/bourgeoa/node-solid-server/containerUri" tag="input" default="https://<podname></public/tiddlers/main>" /> |
 
 The actual path in your solid server will be:
 
@@ -15,22 +15,22 @@ The actual path in your solid server will be:
 
 
 <$reveal type="match" state="$:/plugins/bourgeoa/node-solid-server/loggedin" text="yes-yes">
-    <$button set="$:/plugins/bourgeoa/node-solid-server/makelogin" setTo="yes-no">
+    <$button set="$:/plugins/bourgeoa/node-solid-server/loggedin" setTo="yes-no">
       You are connected : Make Logout
     </$button>
   </$reveal>
 <$reveal type="match" state="$:/plugins/bourgeoa/node-solid-server/loggedin" text="yes-no">
-    <$button set="$:/plugins/bourgeoa/node-solid-server/makelogin" setTo="yes-yes">
+    <$button set="$:/plugins/bourgeoa/node-solid-server/loggedin" setTo="yes-yes">
       You are connected : Stay Logged in
     </$button>
  </$reveal>
 <$reveal type="match" state="$:/plugins/bourgeoa/node-solid-server/loggedin" text="no-no">
-    <$button set="$:/plugins/bourgeoa/node-solid-server/makelogin" setTo="no-yes">
+    <$button set="$:/plugins/bourgeoa/node-solid-server/loggedin" setTo="no-yes">
       You are not logged in : Make Login
     </$button>
   </$reveal>
 <$reveal type="match" state="$:/plugins/bourgeoa/node-solid-server/loggedin" text="no-yes">
-    <$button set="$:/plugins/bourgeoa/node-solid-server/makelogin" setTo="no-no">
+    <$button set="$:/plugins/bourgeoa/node-solid-server/loggedin" setTo="no-no">
       You are not logged in : stay logged out
     </$button>
 </$reveal>  
