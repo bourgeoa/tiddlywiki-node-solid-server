@@ -7,11 +7,11 @@ tags: [[$:/tags/ControlPanel/Saving]]
 !! Choose a container URI to save your tiddlers into.
 !! it should be read/write for your WebID.
 
-|''containerUri'' |<$edit-text tiddler="$:/plugins/bourgeoa/node-solid-server/containerUri" tag="input" default="https://<podname></public/tiddlers/main>" /> |
+|''containerUri'' |<$edit-text tiddler="$:/plugins/bourgeoa/node-solid-server/containeruri" tag="input" default="https://<podname></public/tiddlers/main>" /> |
 
 The actual path in your solid server will be:
 
-  {{$:/plugins/bourgeoa/node-solid-server/containerUri}}/
+  {{$:/plugins/bourgeoa/node-solid-server/containeruri}}/
 
 
 <$reveal type="match" state="$:/plugins/bourgeoa/node-solid-server/loggedin" text="yes-yes">
