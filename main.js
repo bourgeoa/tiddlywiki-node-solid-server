@@ -56,24 +56,24 @@ class RSSyncer {
     this.wiki.setText(LOGGEDIN_KEY, null, null, loggedin);
 
     // Log in/logout to the SolidPod and verify existence of the URI ressource     
-		if (LOGGEDIN_KEY === "yes-no") {
-			fileClient.logout().then( ()=>{
-				console.log( "Logged out");
-			this.ls.setItem(LOGGEDIN_KEY, "no-yes");
-			this.wiki.setText(LOGGEDIN_KEY, null, null, "no-yes");
-			}
-		}
-		else if (LOGGEDIN_KEY === "no-yes") {
-			fileClient.logout().then( ()=>{
-				fileClient.popupLogin().then( webId => {
-					console.log( "Logged in as ${webId}.");
-					this.ls.setItem(LOGGEDIN_KEY, "yes-no");
-					this.wiki.setText(LOGGEDIN_KEY, null, null, "yes-no");
-				getClient();
-				}, err => console.log(err) );
-			}, err => console.log(err) );
-		}
-  
+    if (LOGGEDIN_KEY === "yes-no") {
+      fileClient.logout().then( ()=>{
+      	console.log( "Logged out");
+      	this.ls.setItem(LOGGEDIN_KEY, "no-yes");
+      	this.wiki.setText(LOGGEDIN_KEY, null, null, "no-yes");
+      }
+    }
+    else if (LOGGEDIN_KEY === "no-yes") {
+      fileClient.logout().then( ()=>{
+	fileClient.popupLogin().then( webId => {
+	  console.log( "Logged in as ${webId}.");
+	  this.ls.setItem(LOGGEDIN_KEY, "yes-no");
+	  this.wiki.setText(LOGGEDIN_KEY, null, null, "yes-no");
+	  getClient();
+	}, err => console.log(err) );
+      }, err => console.log(err) );
+    }
+  }
   getClient () {
     let ns = this.getTiddlerText(NAMESPACE_KEY, 'main');
     let priv = this.getTiddlerText(PRIVATENESS_KEY, 'no');
