@@ -10,6 +10,6 @@
     "browserify": "^16.1.0"
   },
   "scripts": {
-    "build": "browserify --standalone _ main.js > /home/bourgeoa/comp/TW5/plugins/bourgeoa/node-solid-server/main.js && cp about.tid config.tid plugin.info /home/bourgeoa/comp/TW5/plugins/bourgeoa/node-solid-server/"
+    "build": "browserify --standalone _ main.js > /home/TW5/plugins/bourgeoa/node-solid-server/main.js && cp about.tid config.tid plugin.info /home/TW5/plugins/bourgeoa/node-solid-server/"
   }
 }
