@@ -1,0 +1,7 @@
+title: $:/plugins/bourgeo/node-solid-server/about
+caption: solid-file-client Plugin
+type: text/vnd.tiddlywiki
+
+This plugin provides a [[syncadaptor|https://tiddlywiki.com/dev/#SyncAdaptorModules]] module for saving changes on a [[Solid Pod|https://remotestorage.io/]] server.
+
+{{$:/plugins/node-solid-serverConfig}}
