@@ -1,6 +1,6 @@
 {
   "dependencies": {
-     "solid-file-client": "^0.2.0"
+    "solid-file-client": "github:jeff-zucker/solid-file-client"
   },
   "peerDependencies": {
     "solid-auth-client": "^2.2.14",
