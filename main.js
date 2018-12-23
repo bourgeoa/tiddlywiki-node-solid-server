@@ -65,7 +65,7 @@ class RSSyncer {
     }
     else if (LOGGEDIN_KEY === "no-yes") {
       fileClient.logout().then( ()=>{
-	fileClient.popupLogin().then( webId => {
+	fileClient.popupLogin("https://solid.community").then( webId => {
 	  console.log( "Logged in as ${webId}.");
 	  this.ls.setItem(LOGGEDIN_KEY, "yes-no");
 	  this.wiki.setText(LOGGEDIN_KEY, null, null, "yes-no");
@@ -101,7 +101,7 @@ class RSSyncer {
 			/* create array of tiddlers */
 			var tiddlers = new Array();
 			for(var i=0; i < folder.files.length; i++) {
-				tiddlers[i] = folder.files[i].name.split(.tid);
+				tiddlers[i] = folder.files[i].name.split(.json);
 			}
 			tiddlers.push({title: NAMESPACE_KEY});
 			tiddlers.push({title: PRIVATENESS_KEY});
@@ -133,7 +133,7 @@ class RSSyncer {
       return
     }
 
-    let url = getClient()+encodeURIComponent(title)+".tid";
+    let url = getClient()+encodeURIComponent(title)+".json";
     fileClient.readFile(url).then(  body => {
     console.log("File content is : ${body}.");
     callback(null, body);
@@ -150,8 +150,8 @@ class RSSyncer {
 	callback(null);
 	return
       }
-      let url = getClient()+encodeURIComponent(tiddler.fields.title)+".tid";
-	fileClient.updateFile( url, tiddler,"text/vnd.tiddlywiki").then( success => {
+      let url = getClient()+encodeURIComponent(tiddler.fields.title)+".json";
+	fileClient.updateFile( url, tiddler,"application/json").then( success => {
 		console.log( "Updated ${url}.");
 		callback(null);
 		}, err => console.log(err) );
@@ -165,7 +165,7 @@ class RSSyncer {
         title === '$:/StoryList') {
       this.ls.removeItem(title)
     }
-    let url = getClient()+encodeURIComponent(title)+".tid";
+    let url = getClient()+encodeURIComponent(title)+".json";
     fileClient.deleteFile(url).then(success => {
 	console.log("Deleted ${url}.");
 	callback(null);
