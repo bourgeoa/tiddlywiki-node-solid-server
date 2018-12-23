@@ -61,7 +61,7 @@ class RSSyncer {
       	console.log( "Logged out");
       	this.ls.setItem(LOGGEDIN_KEY, "no-yes");
       	this.wiki.setText(LOGGEDIN_KEY, null, null, "no-yes");
-      }
+      });
     }
     else if (LOGGEDIN_KEY === "no-yes") {
       fileClient.logout().then( ()=>{
