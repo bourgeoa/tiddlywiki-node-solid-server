@@ -101,7 +101,7 @@ class RSSyncer {
 			/* create array of tiddlers */
 			var tiddlers = new Array();
 			for(var i=0; i < folder.files.length; i++) {
-				tiddlers[i] = folder.files[i].name.split(.json);
+				tiddlers[i] = folder.files[i].name.split(".json");
 			}
 			tiddlers.push({title: NAMESPACE_KEY});
 			tiddlers.push({title: PRIVATENESS_KEY});
