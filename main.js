@@ -1,118 +1,196 @@
 /*\
-title: $:/plugins/tiddlywiki/node-solid-server/syncadaptor.js
+title: $:/plugins/tiddlywiki/nodesolidserver/syncadaptor.js
 type: application/javascript
 module-type: syncadaptor
+
 Saves tiddlers as ressources under containerUri on node-solid-server.
+
 \*/
 
 /* global $tw, fetch */
 
-const NAMESPACE_KEY = '$:/plugins/fiatjaf/remoteStorage/namespace'      // default "main"
-const PRIVATENESS_KEY = '$:/plugins/fiatjaf/remoteStorage/private'      // "yes" or "no"
-const PODROOT_KEY = '$:/plugins/bourgeoa/node-solid-server/containeruri'; // "https://<podname>"
-const LOGGEDIN_KEY = '$:/plugins/bourgeoa/node-solid-server/loggedin';  // "yes-yes" or "yes-no" or "no-no" or "no-yes"
-
-/* 
-let baseuri = 
-let ns = containerUri.split('/').reverse();
-i=0;
-	if (ns[i] === "") i=1;
-const docName = ns[i];
-*/
+const NAMESPACE_KEY = '$:/plugins/bourgeoa/nodesolidserver/namespace'      // default "main"
+const PRIVATENESS_KEY = '$:/plugins/bourgeoa/nodesolidserver/private'      // "yes" or "no"
 
 class RSSyncer {
   constructor (options) {
-    this.wiki = options.wiki
-    this.readonly = (
-      'yes' === this.getTiddlerText('$:/plugins/bourgeoa/node-solid-server/readonly')
-    )
+
+// init param
+    this.wiki = options.wiki;
     this.ls = localStorage;
 
-    const fileClient = require('solid-file-client');
+    this.rs = require("solid-file-client");
+    const Widget = require("solid-file-widget");
 
-		// init wiki tiddlers parameters
+	this._index = null;
+	this._syncedSkinny = null;
+
+// init widget
+    let widget = new Widget(this.rs, {
+        leaveOpen: false,
+        autoCloseAfter: 4000,
+        windowReload : false,
+        solidAppName : "tiddlywiki",
+        appFolder : "/public/tiddlers"
+        
+    })
+
+    widget.attach()
+
+    let style = document.createElement('style')
+    style.innerHTML = `#remotestorage-widget {
+        position: fixed;
+        top: 18px;
+        right: 15px;
+    }`
+    document.head.appendChild(style)
+
+// init wiki tiddlers parameters
     let ns = this.getTiddlerText(NAMESPACE_KEY) ||
       this.ls.getItem(NAMESPACE_KEY) ||
-      'main';
+      "main";
     this.ls.setItem(NAMESPACE_KEY, ns);
     this.wiki.setText(NAMESPACE_KEY, null, null, ns);
 
+alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Default 'wiki folder is 'main'.\nTo change go to 'Options', 'saving', 'nodesolidserver syncadaptor'\nBeware : Reload or disconnect after a change\n\nYou are actually linked to : "+this.getTiddlerText(NAMESPACE_KEY));
+
     let priv = this.getTiddlerText(PRIVATENESS_KEY) ||
 			this.ls.getItem(PRIVATENESS_KEY) ||
-			'no';
+			"no";
     this.ls.setItem(PRIVATENESS_KEY, priv);
     this.wiki.setText(PRIVATENESS_KEY, null, null, priv);
 
-    let pr = this.getTiddlerText(PODROOT_KEY) ||
-      this.ls.getItem(PODROOT_KEY) ||
-      "https://solid.community";           // error because pod provider
-    this.ls.setItem(PODROOT_KEY, pr);
-    this.wiki.setText(PODROOT_KEY, null, null, pr);
-
-    let loggedin = this.getTiddlerText(LOGGEDIN_KEY) ||
-      this.ls.getItem(LOGGEDIN_KEY) ||
-        'no-yes'
-    this.ls.setItem(LOGGEDIN_KEY, loggedin);
-    this.wiki.setText(LOGGEDIN_KEY, null, null, loggedin);
-
-    // Log in/logout to the SolidPod and verify existence of the URI ressource     
-    if (LOGGEDIN_KEY === "yes-no") {
-      fileClient.logout().then( ()=>{
-      	console.log( "Logged out");
-      	this.ls.setItem(LOGGEDIN_KEY, "no-yes");
-      	this.wiki.setText(LOGGEDIN_KEY, null, null, "no-yes");
-      });
-    }
-    else if (LOGGEDIN_KEY === "no-yes") {
-      fileClient.logout().then( ()=>{
-	fileClient.popupLogin("https://solid.community").then( webId => {
-	  console.log( "Logged in as ${webId}.");
-	  this.ls.setItem(LOGGEDIN_KEY, "yes-no");
-	  this.wiki.setText(LOGGEDIN_KEY, null, null, "yes-no");
-	  getClient();
-	}, err => console.log(err) );
-      }, err => console.log(err) );
-    }
   }
+  
   getClient () {
     let ns = this.getTiddlerText(NAMESPACE_KEY, 'main');
     let priv = this.getTiddlerText(PRIVATENESS_KEY, 'no');
-    let client = this.getTiddlerText(PODROOT_KEY_KEY, "https://bourgeoa.solid.community")+"/${priv !== 'yes' ? 'public/' : 'private'}tiddlers/${ns}/";
-		let baseuri = client;    // check existence, else create, return uri or err
-		return baseuri;
+	if (localStorage.getItem('appRootUri') == null) { return;}
+	let baseUri = localStorage.getItem('appRootUri')+"/"+ns;
+	return baseUri
+  }
+
+ getIndex () {
+	if (this._index !== null) { return Promise.resolve(this._index)}
+	return	this.rs.readFile(this.getClient()+"/__index__.json")
+				.then( body => {
+					let index = JSON.parse(body) || JSON.parse('{}');
+        			this._index = index;
+        			return Promise.resolve(index)
+    			}, err => {
+    				alert("this.getClient() "+this.getClient()+"\nbody erreur "+body);
+				})
+  }
+
+  saveIndex () {
+	return this.getIndex().then( index => {
+			this.rs.updateFile(
+				this.getClient()+"/__index__.json",
+				JSON.stringify(index))
+				.then( success => console.log("saved Index :"+JSON.stringify(index)
+    			), err => {
+	    		alert("Index not saved :"+JSON.stringify(index))
+	    		}
+    		)
+		  })
   }
 
   getTiddlerInfo (tiddler) {
     return {}
   }
 
-  getStatus (callback) {//    callback(null, this.rs.remote.connected, this.rs.remote.userAddress)
-		fileClient.checkSession().then( session => {
-			console.log("Logged in as "+session.webId);
-			callback(null, session, session.webId)   // to be updated with webid user name
-		}, err => console.log(err) );
-    callback(err)
+  getStatus(callback) {
+	this.checkFileSystem = true;
+	this.rs.checkSession()
+		.then( session => {
+			if (localStorage.getItem("appRootUri") == null){
+				this.rs.logout().then( success => {
+//				window.location.reload(true); //firefox;
+				this.connected = false;
+				this.wiki.setText("$:/status/IsLoggedIn", null, null, "no");
+				callback(null,"no");
+				},err =>{
+				this.connected = false;
+				this.wiki.setText("$:/status/IsLoggedIn", null, null, "no");
+				callback(null,"no");
+				});
+			}else{
+				this.uri = localStorage.getItem("appRootUri")+"/"+this.getTiddlerText(NAMESPACE_KEY, "main");
+				this.sessionWebId = session.webId;
+		    	this.connected = true;
+
+		    } 
+		})
+		.catch( err => {
+			this.connected = false;
+			this.checkFileSystem = false;
+			this.wiki.setText("$:/status/IsLoggedIn", null, null, "no");
+			callback(null,"no");
+			})
+// checkFileSystem()
+		.then( () => { 
+			if ( this.connected) {
+				return this.rs.readFolder(this.uri).then( folder => {} //this.count = this.count +1; alert("count "+this.count)}
+				, err => {
+				return this.rs.createFolder(this.uri).then( folder => {}) // this.count = this.count +1; alert("count "+this.count)})
+				})
+			}
+		})
+		.then( () => { 
+			if ( this.connected) {
+				return this.rs.readFile(this.uri+"/__index__.json").then( body => {this.checkFileSystem = false;
+				}
+				, err => {
+				return this.rs.createFile(this.uri+"/__index__.json", JSON.stringify({})).then( body => {this.checkFileSystem = false}) //this.count = this.count +1; alert("count "+this.count);this.checkFileSystem = false})
+				})				
+			}
+		})
+		.then( () => {
+			if (this.connected && (this.checkFileSystem === false)) {
+				this.wiki.setText("$:/status/IsLoggedIn", null, null, "yes");
+	    		callback(null,"yes",this.sessionWebId.split("/")[2].split(".")[0]);
+			}
+		})
+		.catch ( err => {
+			if ( this.checkFileSystem === true) {
+				alert("Cannot create the app filesystem :\n"+err)
+			}else{
+				alert("unknown error : "+err)
+			}
+		})
+
+
   }
 
-	getSkinnyTiddlers (callback) {
-		let url = getClient();
-    fileClient.readFolder(url).then(folder => {
-			console.log("Read ${folder.name}, it has ${folder.files.length} files.");
-			/* create array of tiddlers */
-			var tiddlers = new Array();
-			for(var i=0; i < folder.files.length; i++) {
-				tiddlers[i] = folder.files[i].name.split(".json");
+  getSkinnyTiddlers (callback) {
+	if (this.connected == false && localStorage.getItem('appRootUri') !=  null ) { this._index = null; this._syncedSkinny = null; this.connected = true}
+	if (this.connected == true && localStorage.getItem('appRootUri') ==  null ) { window.location.reload(true)}
+    this.getIndex()
+      .then(index => {
+		if ( typeof(index) == "undefined" || localStorage.getItem("appRootUri") == null) 
+			{
+			let tiddlers = {};
+			callback(null, tiddlers);
+			return true
 			}
-			tiddlers.push({title: NAMESPACE_KEY});
-			tiddlers.push({title: PRIVATENESS_KEY});
-			tiddlers.push({title: PODROOT_KEY});
-			tiddlers.push({title: LOGGEDIN_KEY});
-			
-			if (!this.readonly) tiddlers.push({title: '$:/StoryList'});
-			callback(null,tiddlers);   // est-ce un array de tiddler field objects
-		}, err => console.log(err) );
-		callback(err)
-  } 
+		if ( this._syncedSkinny != true ) { alert("'synced with Pod'\n\n - click on + to create a tidller\n - click on <more> then <tags> to find your tiddlers\n  (including untagged ones)") }
+		this._syncedSkinny = true;
+        var tiddlers = Object.keys(index)
+          .map(title => Object.assign({title}, index[title]))
+        tiddlers.push({title: NAMESPACE_KEY})
+        tiddlers.push({title: PRIVATENESS_KEY})
+//        if (!this.readonly) tiddlers.push({title: '$:/StoryList'})
+
+        callback(null, tiddlers)
+      })
+      .catch(e => {
+		this._syncedSkinny = false;
+//		alert("11. e : "+e+"\this.count "+this.count);
+//		window.location.reload(true);
+//        callback(e)
+      })
+    return true
+  }
 
   loadTiddler (title, callback) {
     if (this.readonly && title === '$:/StoryList') {
@@ -120,58 +198,71 @@ class RSSyncer {
       return
     }
 
-    if (title.slice(0, 37) === '$:/plugins/bourgeoa/node-solid-server/' ||
+    if (title.slice(0, 36) === '$:/plugins/bourgeoa/nodesolidserver/' ||
         title === '$:/StoryList') {
       let tiddler = this.ls.getItem(title);
-
       try {
         callback(null, parseTiddlerDates(JSON.parse(tiddler)))
       } catch (e) {
         callback(null, {title, text: tiddler})
       }
-
       return
     }
-
-    let url = getClient()+encodeURIComponent(title)+".json";
-    fileClient.readFile(url).then(  body => {
-    console.log("File content is : ${body}.");
-    callback(null, body);
-    }, err => console.log(err) );
-  callback(err)
+ 
+    this.rs.readFile(this.getClient()+"/"+encodeURIComponent(title)+".json")
+    	.then( body => { callback(null, parseTiddlerDates(JSON.parse(body) || JSON.parse("{}"))); // a confirmer
+    	})
+    return true
   }
 
   saveTiddler (tiddler, callback, tiddlerInfo) {
-    if (this.readonly) return callback(null);
-
-    if (tiddler.fields.title.slice(0, 37) === '$:/plugins/bourgeoa/node-solid-server/' ||
-      tiddler.fields.title === '$:/StoryList') {
-	this.ls.setItem(tiddler.fields.title, JSON.stringify(tiddler.fields));
-	callback(null);
-	return
-      }
-      let url = getClient()+encodeURIComponent(tiddler.fields.title)+".json";
-	fileClient.updateFile( url, tiddler,"application/json").then( success => {
-		console.log( "Updated ${url}.");
-		callback(null);
-		}, err => console.log(err) );
-	callback(err);
+    if (tiddler.fields.title.slice(0, 36) === '$:/plugins/bourgeoa/nodesolidserver/' ||
+	        tiddler.fields.title === '$:/StoryList') 
+        {
+    	this.ls.setItem(tiddler.fields.title, JSON.stringify(tiddler.fields));
+    	// whenever this happens we must reload our index
+    	if (tiddler.fields.title.split('/')[3] === 'nodesolidserver') { this._index = null}
+    	callback(null)
+    	return
+    	}
+	this.getIndex().then( index => {
+        var skinny = Object.assign({}, tiddler.fields)
+        delete skinny.text
+        delete skinny.title
+        index[tiddler.fields.title] = skinny
+    });
+	this.rs.updateFile(
+	        this.getClient()+"/"+encodeURIComponent(tiddler.fields.title)+".json",
+	        JSON.stringify(tiddler.fields)
+	        )
+        .then( success => { 
+          	this.saveIndex();
+			callback(null);
+        	return
+    	}, err => {
+    		alert("Error saved tiddler : "+err);
+	})
+    return true
   }
-	
+
+
   deleteTiddler (title, callback, tiddlerInfo) {
     if (this.readonly) return callback(null);
 			
-    if (title.slice(0, 37) === '$:/plugins/bourgeoa/node-solid-server/' ||
+    if (title.slice(0, 36) === '$:/plugins/bourgeoa/nodesolidserver/' ||
         title === '$:/StoryList') {
       this.ls.removeItem(title)
     }
-    let url = getClient()+encodeURIComponent(title)+".json";
-    fileClient.deleteFile(url).then(success => {
-	console.log("Deleted ${url}.");
-	callback(null);
-	}, err => console.log(err) );
-     callback(err);
-  }
+    
+    this.getIndex().then(index => {
+        delete index[title];
+		this.rs.deleteFile(this.getClient()+"/"+encodeURIComponent(title)+".json").then( success => {
+        	this.saveIndex();
+			callback(null);
+			}, err => alert("deleteTiddler : "+err))
+	    })
+    	return true
+	}
 
   getTiddlerText (title, deft) {
     let tiddler = this.wiki.getTiddlerText(title);

@@ -1,7 +1,8 @@
-title: $:/plugins/bourgeoa/node-solid-server/about
-caption: solid-file-client Plugin
+title: $:/plugins/bourgeoa/nodesolidserver/about
+caption: nodesolidserver syncadaptor
 type: text/vnd.tiddlywiki
 
-This plugin provides a [[syncadaptor|https://tiddlywiki.com/dev/#SyncAdaptorModules]] module for saving changes on a [[Solid Pod|https://forum.solidproject.org/t/solid-ressources/575]] server.
+This plugin provides a [[syncadaptor|https://tiddlywiki.com/dev/#SyncAdaptorModules]] module for saving changes on a [[Solid Pod|https://github.com/solid/node-solid-server]] server.
+[[https://github.com/bourgeoa/tiddlywiki-node-solid-server|https://github.com/bourgeoa/tiddlywiki-node-solid-server]]
 
-{{$:/plugins/node-solid-server/config}}
+{{$:/plugins/bourgeoa/nodesolidserver/config}}
