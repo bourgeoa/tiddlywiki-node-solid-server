@@ -23,6 +23,21 @@ login to your Solid pod and start writing, everything will be saved on your Soli
 
 When you connect in the future you will find your 'tiddlers' listed under you 'tags' or under 'untagged'.
 
+## Use on your server
+
+After `npm i && npm run build`, you will see a folder inside `./build`, copy that folder into your tiddlywiki server's `tiddlers` folder, and edit your `tiddlywiki.info`'s plugin section, add `"$:/plugins/bourgeoa/nodesolidserver"`, it will looks likes:
+
+```json
+    "plugins": [
+        "tiddlywiki/tiddlyweb",
+        "tiddlywiki/filesystem",
+        "tiddlywiki/highlight",
+        "$:/plugins/bourgeoa/nodesolidserver"
+    ],
+```
+
+Restart your server, this syncadaptor will be built into your tiddlywiki.
+
 ## Acknowledgements
 
 Many thanks for inspiration from https://github.com/remotestorage/remotestorage-widget, https://github.com/fiatjaf/tiddlywiki-remotestorage
