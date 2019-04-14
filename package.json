@@ -1,21 +1,23 @@
 {
   "dependencies": {
-    "solid-file-client": "^0.4.8",
+    "solid-file-client": "^0.4.9",
     "solid-file-widget": "^0.4.1"
   },
   "peerDependencies": {
-    "solid-auth-client": "^2.2.14",
-    "rdflib": "^0.19.1"
+    "solid-auth-client": "^2.3.0",
+    "rdflib": "^0.20.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/plugin-transform-flow-strip-types": "^7.2.3",
-    "@babel/plugin-transform-runtime": "^7.2.0",
-    "@babel/preset-env": "^7.2.3",
+    "@babel/core": "^7.4.3",
+    "@babel/plugin-transform-flow-strip-types": "^7.4.0",
+    "@babel/plugin-transform-runtime": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
     "babelify": "^10.0.0",
-    "browserify": "^16.1.0"
+    "browserify": "^16.2.3",
+    "rimraf": "^2.6.3"
   },
   "scripts": {
-    "build": "browserify --standalone _ main.js -o /volume1/homes/admin/TW5/plugins/bourgeoa/nodesolidserver/main.js -t babelify && cp about.tid config.tid plugin.info ../nodesolidserver/"
+    "clean": "rimraf ./build",
+    "build": "npm run clean && browserify --standalone _ main.js -o ./build/solid-syncadaptor/main.js -t babelify && cp about.tid config.tid plugin.info ./build/solid-syncadaptor/"
   }
 }
