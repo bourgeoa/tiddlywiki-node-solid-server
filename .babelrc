@@ -3,9 +3,21 @@
     [
       "@babel/preset-env",
       {
+<<<<<<< HEAD
+        "targets": {
+          "browsers": [
+            ">0.25%",
+            "not ie 11",
+            "not op_mini all"
+          ]
+        }
+      }
+   ]
+=======
         "useBuiltIns": "entry"
       }
     ]
+>>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b
   ],
   "plugins": [
     "@babel/plugin-transform-flow-strip-types",
