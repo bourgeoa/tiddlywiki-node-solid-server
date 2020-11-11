@@ -7,17 +7,13 @@ tags: [[$:/tags/ControlPanel/Saving]]
 !! Choose a container URI to save your tiddlers into.
 !! it should be read/write for your webid.
 
-<<<<<<< HEAD
 |''Pod Name''       | <$edit-text tiddler="$:/plugins/bourgeoa/nodesolidserver/containeruri" tag="input" /> |       for example :    https://xyz.solid.community|
-=======
->>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b
 |''Root Folder''| <$reveal type="nomatch" state="$:/plugins/bourgeoa/nodesolidserver/private" text="yes">public</$reveal><$reveal type="match" state="$:/plugins/bourgeoa/nodesolidserver/private" text="yes">private</$reveal> |      yes :  public       no :  private|
 |''tiddlers''      |                tiddlers |    not editable|
 |''wiki folder''     | <$edit-text tiddler="$:/plugins/bourgeoa/nodesolidserver/namespace" tag="input" default="main" /> |       main is the default|
 The actual path in your solid server will be:
 
   {{$:/plugins/bourgeoa/node-solid-server/containeruri}}/<$reveal type="nomatch" state="$:/plugins/bourgeoa/nodesolidserver/private" text="yes">public</$reveal><$reveal type="match" state="$:/plugins/bourgeoa/nodesolidserver/private" text="yes">private</$reveal>/tiddlers/{{$:/plugins/bourgeoa/nodesolidserver/namespace}}
-<<<<<<< HEAD
 
 
 <$reveal type="match" state="$:/plugins/bourgeoa/nodesolidserver/loggedin" text="yes-yes">
@@ -43,9 +39,3 @@ The actual path in your solid server will be:
   
 
 ---"Please close the tiddler to save the path to your Solid Pod."---
-=======
-  
-
----"Please close the tiddler to save the path to your Solid Pod."---
--------------------"And reload your browser"------------------------
->>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b

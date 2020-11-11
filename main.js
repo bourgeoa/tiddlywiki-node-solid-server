@@ -3,12 +3,8 @@ title: $:/plugins/tiddlywiki/nodesolidserver/syncadaptor.js
 type: application/javascript
 module-type: syncadaptor
 
-<<<<<<< HEAD
 Saves tiddlers as .ttl ressources under containerUri on node-solid-server.
 ??? Migration : Replace .json tiddler by .ttl ones on firdt save. 
-=======
-Saves tiddlers as ressources under containerUri on node-solid-server.
->>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b
 
 \*/
 
@@ -24,7 +20,6 @@ class RSSyncer {
     this.wiki = options.wiki;
     this.ls = localStorage;
 
-<<<<<<< HEAD
     this.rs = require("solid-file-client"); // ./scripts/solid-file-client.bundle.js"); // 
     const Widget = require("solid-file-widget");
     this.jsonld = require("jsonld");
@@ -87,26 +82,6 @@ class RSSyncer {
 
     widget.attach()
 
-=======
-    this.rs = require("solid-file-client");
-    const Widget = require("solid-file-widget");
-
-	this._index = null;
-	this._syncedSkinny = null;
-
-// init widget
-    let widget = new Widget(this.rs, {
-        leaveOpen: false,
-        autoCloseAfter: 4000,
-        windowReload : false,
-        solidAppName : "tiddlywiki",
-        appFolder : "/public/tiddlers"
-        
-    })
-
-    widget.attach()
-
->>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b
     let style = document.createElement('style')
     style.innerHTML = `#remotestorage-widget {
         position: fixed;
@@ -122,11 +97,7 @@ class RSSyncer {
     this.ls.setItem(NAMESPACE_KEY, ns);
     this.wiki.setText(NAMESPACE_KEY, null, null, ns);
 
-<<<<<<< HEAD
 // alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Default 'wiki folder is 'main'.\nTo change go to 'Options', 'saving', 'nodesolidserver syncadaptor'\nBeware : Reload or disconnect after a change\n\nYou are actually linked to : "+this.getTiddlerText(NAMESPACE_KEY));
-=======
-alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Default 'wiki folder is 'main'.\nTo change go to 'Options', 'saving', 'nodesolidserver syncadaptor'\nBeware : Reload or disconnect after a change\n\nYou are actually linked to : "+this.getTiddlerText(NAMESPACE_KEY));
->>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b
 
     let priv = this.getTiddlerText(PRIVATENESS_KEY) ||
 			this.ls.getItem(PRIVATENESS_KEY) ||
@@ -144,7 +115,6 @@ alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Defau
 	return baseUri
   }
 
-<<<<<<< HEAD
   getIndex () { 
 	if (this._index !== null) { return Promise.resolve(this._index)}
 	else if (this.indexFile === true) {
@@ -178,25 +148,6 @@ alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Defau
 			this.rs.updateFile(
 				this.getClient()+"/__index__.json",
 				JSON.stringify(index), 'application/json')
-=======
- getIndex () {
-	if (this._index !== null) { return Promise.resolve(this._index)}
-	return	this.rs.readFile(this.getClient()+"/__index__.json")
-				.then( body => {
-					let index = JSON.parse(body) || JSON.parse('{}');
-        			this._index = index;
-        			return Promise.resolve(index)
-    			}, err => {
-    				alert("this.getClient() "+this.getClient()+"\nbody erreur "+body);
-				})
-  }
-
-  saveIndex () {
-	return this.getIndex().then( index => {
-			this.rs.updateFile(
-				this.getClient()+"/__index__.json",
-				JSON.stringify(index))
->>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b
 				.then( success => console.log("saved Index :"+JSON.stringify(index)
     			), err => {
 	    		alert("Index not saved :"+JSON.stringify(index))
@@ -212,10 +163,7 @@ alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Defau
   getStatus(callback) {
 	this.checkFileSystem = true;
 	this.rs.checkSession()
-<<<<<<< HEAD
 		// check session
-=======
->>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b
 		.then( session => {
 			if (localStorage.getItem("appRootUri") == null){
 				this.rs.logout().then( success => {
@@ -241,7 +189,6 @@ alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Defau
 			this.wiki.setText("$:/status/IsLoggedIn", null, null, "no");
 			callback(null,"no");
 			})
-<<<<<<< HEAD
 		// check tiddlywikifolder
 		.then( () => { 
 			if ( this.connected) {
@@ -271,26 +218,6 @@ alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Defau
 			}
 		})
 		// set status IsLoggedIn
-=======
-// checkFileSystem()
-		.then( () => { 
-			if ( this.connected) {
-				return this.rs.readFolder(this.uri).then( folder => {} //this.count = this.count +1; alert("count "+this.count)}
-				, err => {
-				return this.rs.createFolder(this.uri).then( folder => {}) // this.count = this.count +1; alert("count "+this.count)})
-				})
-			}
-		})
-		.then( () => { 
-			if ( this.connected) {
-				return this.rs.readFile(this.uri+"/__index__.json").then( body => {this.checkFileSystem = false;
-				}
-				, err => {
-				return this.rs.createFile(this.uri+"/__index__.json", JSON.stringify({})).then( body => {this.checkFileSystem = false}) //this.count = this.count +1; alert("count "+this.count);this.checkFileSystem = false})
-				})				
-			}
-		})
->>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b
 		.then( () => {
 			if (this.connected && (this.checkFileSystem === false)) {
 				this.wiki.setText("$:/status/IsLoggedIn", null, null, "yes");
@@ -319,7 +246,6 @@ alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Defau
 			callback(null, tiddlers);
 			return true
 			}
-<<<<<<< HEAD
 		if ( this._syncedSkinny != true ) {
       if( confirm("Do you want to test performance \nwith an index file ???")) this.indexFile = true;
       alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Default 'wiki folder is 'main'.\nTo change go to 'Options', 'saving', 'nodesolidserver syncadaptor'\nBeware : Reload or disconnect after a change\n\nYou are actually linked to : "+this.getTiddlerText(NAMESPACE_KEY));
@@ -327,10 +253,6 @@ alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Defau
 			}
 		this._syncedSkinny = true;
 // alert('getSkinnyTiddlers ' + this.getClient())
-=======
-		if ( this._syncedSkinny != true ) { alert("'synced with Pod'\n\n - click on + to create a tidller\n - click on <more> then <tags> to find your tiddlers\n  (including untagged ones)") }
-		this._syncedSkinny = true;
->>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b
         var tiddlers = Object.keys(index)
           .map(title => Object.assign({title}, index[title]))
         tiddlers.push({title: NAMESPACE_KEY})
@@ -341,12 +263,6 @@ alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Defau
       })
       .catch(e => {
 		this._syncedSkinny = false;
-<<<<<<< HEAD
-=======
-//		alert("11. e : "+e+"\this.count "+this.count);
-//		window.location.reload(true);
-//        callback(e)
->>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b
       })
     return true
   }
@@ -367,7 +283,6 @@ alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Defau
       }
       return
     }
-<<<<<<< HEAD
 	  this.rs.fetchAndParse(this.getClient()+"/"+encodeURIComponent(title)+".ttl", 'text/turtle')
 	    	.then(graph => {
 	    		this.tiddlerJson = {};
@@ -403,12 +318,6 @@ alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Defau
     		alert("readFile "+title+" "+err)
 		})
 */
-=======
- 
-    this.rs.readFile(this.getClient()+"/"+encodeURIComponent(title)+".json")
-    	.then( body => { callback(null, parseTiddlerDates(JSON.parse(body) || JSON.parse("{}"))); // a confirmer
-    	})
->>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b
     return true
   }
 
@@ -422,17 +331,12 @@ alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Defau
     	callback(null)
     	return
     	}
-<<<<<<< HEAD
 	  this.getIndex().then( index => {
-=======
-	this.getIndex().then( index => {
->>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b
         var skinny = Object.assign({}, tiddler.fields)
         delete skinny.text
         delete skinny.title
         index[tiddler.fields.title] = skinny
     });
-<<<<<<< HEAD
     this.ttlTiddler(tiddler.fields)
 // alert('saveTiddler ' + this.getClient())
 		if (localStorage.getItem('appRootUri') == null) {
@@ -443,31 +347,16 @@ alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Defau
     this.rs.updateFile( 
 				this.getClient()+"/"+encodeURIComponent(tiddler.fields.title)+".ttl",
 	    		this.tiddlerTtl, 'text/turtle')
-=======
-	this.rs.updateFile(
-	        this.getClient()+"/"+encodeURIComponent(tiddler.fields.title)+".json",
-	        JSON.stringify(tiddler.fields)
-	        )
->>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b
         .then( success => { 
           	this.saveIndex();
 			callback(null);
         	return
     	}, err => {
-<<<<<<< HEAD
     		alert("Error saving tiddler : "+err);
 		})
 	  return true
   }
 
-=======
-    		alert("Error saved tiddler : "+err);
-	})
-    return true
-  }
-
-
->>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b
   deleteTiddler (title, callback, tiddlerInfo) {
     if (this.readonly) return callback(null);
 			
@@ -478,11 +367,7 @@ alert("You can work on different tiddlywiki's on your pod.\nOne at a time. Defau
     
     this.getIndex().then(index => {
         delete index[title];
-<<<<<<< HEAD
 		this.rs.deleteFile(this.getClient()+"/"+encodeURIComponent(title)+".ttl").then( success => {
-=======
-		this.rs.deleteFile(this.getClient()+"/"+encodeURIComponent(title)+".json").then( success => {
->>>>>>> 33cc34a74f13f68f7a5e04e5f08bf2952e680e1b
         	this.saveIndex();
 			callback(null);
 			}, err => alert("deleteTiddler : "+err))
