@@ -7,35 +7,13 @@ tags: [[$:/tags/ControlPanel/Saving]]
 !! Choose a container URI to save your tiddlers into.
 !! it should be read/write for your webid.
 
-|''Pod Name''       | <$edit-text tiddler="$:/plugins/bourgeoa/nodesolidserver/containeruri" tag="input" /> |       for example :    https://xyz.solid.community|
 |''Root Folder''| <$reveal type="nomatch" state="$:/plugins/bourgeoa/nodesolidserver/private" text="yes">public</$reveal><$reveal type="match" state="$:/plugins/bourgeoa/nodesolidserver/private" text="yes">private</$reveal> |      yes :  public       no :  private|
 |''tiddlers''      |                tiddlers |    not editable|
 |''wiki folder''     | <$edit-text tiddler="$:/plugins/bourgeoa/nodesolidserver/namespace" tag="input" default="main" /> |       main is the default|
 The actual path in your solid server will be:
 
   {{$:/plugins/bourgeoa/node-solid-server/containeruri}}/<$reveal type="nomatch" state="$:/plugins/bourgeoa/nodesolidserver/private" text="yes">public</$reveal><$reveal type="match" state="$:/plugins/bourgeoa/nodesolidserver/private" text="yes">private</$reveal>/tiddlers/{{$:/plugins/bourgeoa/nodesolidserver/namespace}}
-
-
-<$reveal type="match" state="$:/plugins/bourgeoa/nodesolidserver/loggedin" text="yes-yes">
-    <$button set="$:/plugins/bourgeoa/nodesolidserver/loggedin" setTo="yes-no">
-      You are connected : Make Logout
-    </$button>
-  </$reveal>
-<$reveal type="match" state="$:/plugins/bourgeoa/nodesolidserver/loggedin" text="yes-no">
-    <$button set="$:/plugins/bourgeoa/nodesolidserver/loggedin" setTo="yes-yes">
-      You are connected : Stay Logged in
-    </$button>
- </$reveal>
-<$reveal type="match" state="$:/plugins/bourgeoa/nodesolidserver/loggedin" text="no-no" default="no-no">
-    <$button set="$:/plugins/bourgeoa/nodesolidserver/loggedin" setTo="no-yes">
-      You are not logged in : Make Login
-    </$button>
-  </$reveal>
-<$reveal type="match" state="$:/plugins/bourgeoa/nodesolidserver/loggedin" text="no-yes">
-    <$button set="$:/plugins/bourgeoa/nodesolidserver/loggedin" setTo="no-no">
-      You are not logged in : stay logged out
-    </$button>
-</$reveal>
   
 
 ---"Please close the tiddler to save the path to your Solid Pod."---
+-------------------"And reload your browser"------------------------

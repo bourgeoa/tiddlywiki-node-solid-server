@@ -5,7 +5,9 @@ To login to the Solid pod it uses [solid-file-widget](https://github.com/bourgeo
 
 ## Save your tiddlers to your [Solid pod](https://github.com/solid/node-solid-server)!
 
-Works anywhere, just grab the plugin on [$:/plugins/fiatjaf/remoteStorage](https://bourgeoa.solid.community/public/tiddlywiki/#%24%3A%2Fplugins%2Fbourgeoa%2Fnodesolidserver), save, reload, optionally change your preferences on [$:/plugins/bourgeoa/nodesolidserver/config](https://bourgeoa.solid.community/public/tiddlywiki/#%24%3A%2Fplugins%2Fbourgeoa%2Fnodesolidserver) and you'll be good to go.
+Tiddlers are saved as `turtle` files by default in `https://<yourPod>/public/tiddlers/main`
+
+Works anywhere, just grab the plugin on [$:/plugins/bourgeoa/nodesolidserver](https://bourgeoa.solidcommunity.net/public/tiddlywiki/#%24%3A%2Fplugins%2Fbourgeoa%2Fnodesolidserver), save, reload, optionally change your preferences on [$:/plugins/bourgeoa/nodesolidserver/config](https://bourgeoa.solid.community/public/tiddlywiki/#%24%3A%2Fplugins%2Fbourgeoa%2Fnodesolidserver) and you'll be good to go.
 
 Your tiddlers will be saved on your Solid Pod to `/public/tiddlers/<chosen-namespace>/`.
 
@@ -18,10 +20,10 @@ For any help on [tiddlywiki](https://tiddlywiki.com/).
 
 ## Just start using it now
 
-If you're just starting a new TiddlyWiki you don't have to bother installing anything, just visit https://bourgeoa.solid.community/public/tiddlywiki
+If you're just starting a new TiddlyWiki you don't have to bother installing anything, just visit https://bourgeoa.solidcommunity.net/public/tiddlywiki
 login to your Solid pod and start writing, everything will be saved on your Solid pod.
 
-When you connect in the future you will find your 'tiddlers' listed under you 'tags' or under 'untagged'.
+When you connect in the future you will find your 'tiddlers' listed under 'tags' or under 'untagged'.
 
 ## Acknowledgements
 

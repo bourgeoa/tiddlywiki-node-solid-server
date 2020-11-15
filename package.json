@@ -1,13 +1,11 @@
 {
   "name": "Tiddlywiki-node-solid-server",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "main": "main.js",
   "dependencies": {
-    "npm": "^6.9.0",
-    "rdflib": "^0.20.1",
-    "solid-auth-client": "^2.3.0",
-    "solid-file-client": "^0.5.1",
-    "solid-file-widget": "^0.4.0"
+    "solid-auth-client": "^2.5.2",
+    "solid-file-client": "^1.1.0",
+    "solid-file-widget": "^1.0.0"
   },
   "peerDependencies": {},
   "devDependencies": {
@@ -19,6 +17,6 @@
     "browserify": "^16.1.0"
   },
   "scripts": {
-    "build": "browserify -i null --standalone _ main.js -o /volume1/homes/admin/TW5/plugins/bourgeoa/nodesolidserver/main.js -t babelify && cp about.tid config.tid plugin.info ../nodesolidserver/"
+    "build": "browserify --standalone _ main.js -o /volume1/homes/admin/TW5/plugins/bourgeoa/nodesolidserver/main.js -t babelify && cp about.tid config.tid plugin.info ../nodesolidserver/"
   }
 }
